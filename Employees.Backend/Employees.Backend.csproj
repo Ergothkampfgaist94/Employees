@@ -20,8 +20,4 @@
     <ProjectReference Include="..\Employees.Shared\Employees.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="UnitOfWork\Implementations\" />
-  </ItemGroup>
-
 </Project>
