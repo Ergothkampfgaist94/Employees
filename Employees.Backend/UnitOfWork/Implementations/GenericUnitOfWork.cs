@@ -1,5 +1,6 @@
 ﻿using Employees.Backend.Repositories.Interfaces;
 using Employees.Backend.UnitOfWork.Interfaces;
+using Employees.Shared.DTOs;
 using Employees.Shared.Responses;
 
 namespace Employees.Backend.UnitOfWork.Implementations;
@@ -7,6 +8,12 @@ namespace Employees.Backend.UnitOfWork.Implementations;
 public class GenericUnitOfWork<T> : IGenericUnitOfWork<T> where T : class
 {
     private readonly IGenericRepository<T> _repository;
+
+    public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination) =>
+        await _repository.GetAsync(pagination);
+
+    public virtual async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination) =>
+        await _repository.GetTotalRecordsAsync(pagination);
 
     public GenericUnitOfWork(IGenericRepository<T> repository)
     {

@@ -1,4 +1,5 @@
 ﻿using Employees.Backend.UnitOfWork.Interfaces;
+using Employees.Shared.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Employees.Backend.Controllers;
@@ -32,6 +33,28 @@ public class GenericController<T> : Controller where T : class
             return Ok(response.Result);
         }
         return NotFound();
+    }
+
+    [HttpGet("paginated")]
+    public virtual async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
+    {
+        var action = await _unitOfWork.GetAsync(pagination);
+        if (action.IsSuccess)
+        {
+            return Ok(action.Result);
+        }
+        return BadRequest();
+    }
+
+    [HttpGet("totalRecords")]
+    public virtual async Task<IActionResult> GetTotalRecordsAsync([FromQuery] PaginationDTO pagination)
+    {
+        var action = await _unitOfWork.GetTotalRecordsAsync(pagination);
+        if (action.IsSuccess)
+        {
+            return Ok(action.Result);
+        }
+        return BadRequest();
     }
 
     [HttpPost]
