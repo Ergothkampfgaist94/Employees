@@ -18,13 +18,13 @@ public partial class EmployeeEdit
 
     protected override async Task OnInitializedAsync()
     {
-        var responseHttp = await Repository.GetAsync<Employee>($"api/employees/{Id}");
+        var responseHttp = await Repository.GetAsync<Employee>($"/api/employees/{Id}");
 
         if (responseHttp.Error)
         {
             if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                NavigationManager.NavigateTo("employees");
+                NavigationManager.NavigateTo("/employees");
             }
             else
             {
@@ -40,7 +40,7 @@ public partial class EmployeeEdit
 
     private async Task EditAsync()
     {
-        var responseHttp = await Repository.PutAsync("api/employees", employee);
+        var responseHttp = await Repository.PutAsync("/api/employees", employee);
 
         if (responseHttp.Error)
         {
@@ -48,13 +48,12 @@ public partial class EmployeeEdit
             Snackbar.Add(messageError!, Severity.Error);
             return;
         }
-
-        Return();
         Snackbar.Add("Registro guardado.", Severity.Success);
+        Return();
     }
 
     private void Return()
     {
-        NavigationManager.NavigateTo("countries");
+        NavigationManager.NavigateTo("/employees");
     }
 }

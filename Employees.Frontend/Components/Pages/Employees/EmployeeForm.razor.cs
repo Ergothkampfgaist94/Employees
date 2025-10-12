@@ -1,7 +1,6 @@
 using Employees.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using System.Diagnostics.Metrics;
 
 namespace Employees.Frontend.Components.Pages.Employees;
 
