@@ -1,0 +1,29 @@
+﻿@page "/employees"
+
+<h3>Empleados</h3>
+@if (Employees == null)
+{
+    <Employees.Frontend.Components.Shared.Loading/>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Salario</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Employees)
+            {
+                <tr>
+                    <td>@employee.Id</td>
+                    <td>@employee.FirstName @employee.LastName</td>
+                    <td>@employee.Salary.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
