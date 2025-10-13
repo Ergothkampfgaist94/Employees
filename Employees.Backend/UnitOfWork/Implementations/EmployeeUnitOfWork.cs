@@ -1,5 +1,6 @@
 ﻿using Employees.Backend.Repositories.Interfaces;
 using Employees.Backend.UnitOfWork.Interfaces;
+using Employees.Shared.DTOs;
 using Employees.Shared.Entities;
 using Employees.Shared.Responses;
 using Microsoft.AspNetCore.Components;
@@ -14,6 +15,9 @@ public class EmployeeUnitOfWork : GenericUnitOfWork<Employee>, IEmployeeUnitOfWo
     {
         _employeeRepository = employeeRepository;
     }
+
+    public override async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination) =>
+        await _employeeRepository.GetTotalRecordsAsync(pagination);
 
     public async Task<ActionResponse<IEnumerable<string>>> GetEmployeeNamesAsync(string text) =>
         await _employeeRepository.GetEmployeeNamesAsync(text);

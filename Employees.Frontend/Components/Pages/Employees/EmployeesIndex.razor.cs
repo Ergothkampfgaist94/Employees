@@ -3,7 +3,6 @@ using Employees.Frontend.Repositories;
 using Employees.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using System.Diagnostics.Metrics;
 using System.Net;
 
 namespace Employees.Frontend.Components.Pages.Employees;
@@ -86,6 +85,23 @@ public partial class EmployeesIndex
         await table.ReloadServerData();
     }
 
+    private async Task ToggleActiveAsync(Employee employee, bool newValue)
+    {
+        employee.IsActive = newValue;
+        var response = await Repository.PutAsync($"/api/employees", employee);
+
+        if (response.Error)
+        {
+            var message = await response.GetErrorMessageAsync();
+            Snackbar.Add(message ?? "Error al actualizar el estado del empleado", Severity.Error);
+            employee.IsActive = !newValue;
+        }
+        else
+        {
+            Snackbar.Add($"Empleado {(newValue ? "activado" : "desactivado")} correctamente", Severity.Success);
+        }
+    }
+
     private async Task ShowModalAsync(int id = 0, bool isEdit = false)
     {
         var options = new DialogOptions
@@ -107,7 +123,7 @@ public partial class EmployeesIndex
         }
 
         var result = await dialog.Result;
-        if (!result.Canceled)
+        if (result!.Canceled!)
         {
             await LoadTotalRecordsAsync();
             await table.ReloadServerData();

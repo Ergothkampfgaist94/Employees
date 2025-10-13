@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Localization;
 
 namespace Employees.Frontend.Components.Shared;
 

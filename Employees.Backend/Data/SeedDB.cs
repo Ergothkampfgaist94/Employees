@@ -22,95 +22,46 @@ public class SeedDB
     {
         if (!_context.Employees.Any())
         {
-            _context.Employees.Add(new Employee
+            var random = new Random();
+            var firstNames = new[]
             {
-                FirstName = "John",
-                LastName = "Doe",
-                IsActive = true,
-                HireDate = DateTime.UtcNow,
-                Salary = 2000000
-            });
+            "John", "Jane", "Carlos", "Maria", "David", "Laura",
+            "Andres", "Sofia", "Michael", "Daniela", "Pedro", "Lucia",
+            "Camila", "Sebastian", "Valentina", "Diego", "Isabella",
+            "Felipe", "Paula", "Mateo"
+        };
 
-            _context.Employees.Add(new Employee
+            var lastNames = new[]
             {
-                FirstName = "Jane",
-                LastName = "Smith",
-                IsActive = true,
-                HireDate = DateTime.UtcNow.AddDays(-10),
-                Salary = 2500000
-            });
+            "Gomez", "Lopez", "Ramirez", "Torres", "Martinez", "Gonzalez",
+            "Rodriguez", "Perez", "Garcia", "Fernandez", "Castro",
+            "Hernandez", "Diaz", "Jimenez", "Moreno", "Ruiz", "Silva",
+            "Vargas", "Rojas", "Ortega"
+        };
 
-            _context.Employees.Add(new Employee
-            {
-                FirstName = "Carlos",
-                LastName = "Gonzalez",
-                IsActive = true,
-                HireDate = DateTime.UtcNow.AddDays(-30),
-                Salary = 2200000
-            });
+            var employees = new List<Employee>();
 
-            _context.Employees.Add(new Employee
+            for (int i = 1; i <= 60; i++)
             {
-                FirstName = "Maria",
-                LastName = "Lopez",
-                IsActive = false,
-                HireDate = DateTime.UtcNow.AddMonths(-2),
-                Salary = 1800000
-            });
+                string firstName = firstNames[random.Next(firstNames.Length)];
+                string lastName = lastNames[random.Next(lastNames.Length)];
+                bool isActive = random.Next(0, 2) == 1;
+                decimal salary = random.Next(1_500_000, 3_500_000);
+                DateTime hireDate = DateTime.UtcNow.AddDays(-random.Next(0, 1000));
 
-            _context.Employees.Add(new Employee
-            {
-                FirstName = "David",
-                LastName = "Brown",
-                IsActive = true,
-                HireDate = DateTime.UtcNow.AddMonths(-6),
-                Salary = 3000000
-            });
+                employees.Add(new Employee
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    IsActive = isActive,
+                    HireDate = hireDate,
+                    Salary = salary
+                });
+            }
 
-            _context.Employees.Add(new Employee
-            {
-                FirstName = "Laura",
-                LastName = "Martinez",
-                IsActive = true,
-                HireDate = DateTime.UtcNow.AddYears(-1),
-                Salary = 2100000
-            });
-
-            _context.Employees.Add(new Employee
-            {
-                FirstName = "Andres",
-                LastName = "Torres",
-                IsActive = false,
-                HireDate = DateTime.UtcNow.AddYears(-3),
-                Salary = 1700000
-            });
-
-            _context.Employees.Add(new Employee
-            {
-                FirstName = "Sofia",
-                LastName = "Ramirez",
-                IsActive = true,
-                HireDate = DateTime.UtcNow.AddMonths(-8),
-                Salary = 2400000
-            });
-
-            _context.Employees.Add(new Employee
-            {
-                FirstName = "Michael",
-                LastName = "Johnson",
-                IsActive = true,
-                HireDate = DateTime.UtcNow.AddDays(-60),
-                Salary = 2600000
-            });
-            _context.Employees.Add(new Employee
-            {
-                FirstName = "Michael",
-                LastName = "Jackson",
-                IsActive = true,
-                HireDate = DateTime.UtcNow.AddDays(-300),
-                Salary = 2600000
-            });
+            _context.Employees.AddRange(employees);
             await _context.SaveChangesAsync();
         }
     }
+
 }

@@ -27,13 +27,27 @@ else
             <Employees.Frontend.Components.Shared.FilterComponent ApplyFilter="SetFilterValue" />
         </ToolBarContent>
         <HeaderContent>
-            <MudTh>Empleado</MudTh>
+            <MudTh style="width: 100px;">ID</MudTh>
+            <MudTh style="width: 100px;">Nombres</MudTh>
+            <MudTh style="width: 100px;">Apellidos</MudTh>
+            <MudTh style="width: 100px;">Salario</MudTh>
+            <MudTh style="width: 100px;">Fecha de contratación</MudTh>
             <MudTh style="width: 100px;">Activo</MudTh>
             <MudTh style="width: 100px;">Acciones</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd>@context.FirstName @context.LastName</MudTd>
-            <MudTd>@context.IsActive</MudTd>
+            <MudTd>@context.Id</MudTd>
+            <MudTd>@context.FirstName</MudTd>
+            <MudTd>@context.LastName</MudTd>
+            <MudTd>@context.Salary</MudTd>
+            <MudTd>@context.HireDate</MudTd>
+            <MudTd>
+                <MudButton Variant="Variant.Filled"
+                           Color="@(context.IsActive ? Color.Success : Color.Error)"
+                           OnClick="@(async () => await ToggleActiveAsync(context, !context.IsActive))">
+                    @(context.IsActive ? "Activo" : "Inactivo")
+                </MudButton>
+            </MudTd>
             <MudTd>
                 <MudTooltip Text="Editar">
                     <MudButton Variant="Variant.Filled"

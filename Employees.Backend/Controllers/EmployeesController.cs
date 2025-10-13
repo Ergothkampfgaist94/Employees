@@ -1,4 +1,5 @@
 ﻿using Employees.Backend.UnitOfWork.Interfaces;
+using Employees.Shared.DTOs;
 using Employees.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,5 +25,16 @@ public class EmployeesController : GenericController<Employee>
             return Ok(response.Result);
         }
         return BadRequest(response.Message);
+    }
+
+    [HttpGet("totalRecords")]
+    public override async Task<IActionResult> GetTotalRecordsAsync([FromQuery] PaginationDTO pagination)
+    {
+        var action = await _employeeUnitOfWork.GetTotalRecordsAsync(pagination);
+        if (action.IsSuccess)
+        {
+            return Ok(action.Result);
+        }
+        return BadRequest();
     }
 }

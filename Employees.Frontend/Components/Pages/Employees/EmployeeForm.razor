@@ -12,11 +12,14 @@
                   @bind-Value="@Employee.Salary"
                   For="@(() => Employee.Salary)"
                   Class="mb-4" />
+    <MudTextField Label="Fecha de contratación"
+                  @bind-Value="@Employee.HireDate"
+                  For="@(() => Employee.HireDate)"
+                  Class="mb-4" />
     <MudTextField Label="Activo"
-                  @bind-Checked="@Employee.IsActive"
+                  @bind-Value="@Employee.IsActive"
                   For="@(() => Employee.IsActive)"
                   Class="mb-4" />
-
     <MudButton Variant="Variant.Outlined"
                StartIcon="@Icons.Material.Filled.ArrowBack"
                Color="Color.Info"

@@ -15,7 +15,7 @@ public class Employee
     public string LastName { get; set; } = null!;
 
     public bool IsActive { get; set; }
-    public DateTime HireDate { get; set; }
+    public DateTime HireDate { get; set; } = DateTime.UtcNow;
 
     [Required(ErrorMessage = "El campo{0} es obligatorio.")]
     [Range(1000000, double.MaxValue, ErrorMessage = "El campo {0} debe ser mayor o igual a ${1}.")]
