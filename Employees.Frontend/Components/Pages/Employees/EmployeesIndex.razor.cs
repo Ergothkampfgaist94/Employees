@@ -107,7 +107,7 @@ public partial class EmployeesIndex
         }
 
         var result = await dialog.Result;
-        if (result!.Canceled!)
+        if (!result.Canceled)
         {
             await LoadTotalRecordsAsync();
             await table.ReloadServerData();
@@ -118,7 +118,7 @@ public partial class EmployeesIndex
     {
         var parameters = new DialogParameters
         {
-            { "Message", $"Estas seguro de borrar el Empleado: {employee.FirstName +" "+ employee.LastName }" }
+            { "Message", $"Estas seguro de borrar el Empleado: {employee.FirstName} {employee.LastName }?" }
         };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, CloseOnEscapeKey = true };
         var dialog = await DialogService.ShowAsync<ConfirmDialog>("Confirmación", parameters, options);
@@ -133,7 +133,7 @@ public partial class EmployeesIndex
         {
             if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
             {
-                NavigationManager.NavigateTo("/employee");
+                NavigationManager.NavigateTo("/employees");
             }
             else
             {

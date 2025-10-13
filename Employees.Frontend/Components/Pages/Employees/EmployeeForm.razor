@@ -1,8 +1,20 @@
 ﻿<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
-    <MudTextField Label="Empleado"
+    <MudTextField Label="Nombres"
                   @bind-Value="@Employee.FirstName"
                   For="@(() => Employee.FirstName)"
+                  Class="mb-4" />
+    <MudTextField Label="Apellidos"
+                  @bind-Value="@Employee.LastName"
+                  For="@(() => Employee.LastName)"
+                  Class="mb-4" />
+    <MudTextField Label="Salario"
+                  @bind-Value="@Employee.Salary"
+                  For="@(() => Employee.Salary)"
+                  Class="mb-4" />
+    <MudTextField Label="Activo"
+                  @bind-Checked="@Employee.IsActive"
+                  For="@(() => Employee.IsActive)"
                   Class="mb-4" />
 
     <MudButton Variant="Variant.Outlined"

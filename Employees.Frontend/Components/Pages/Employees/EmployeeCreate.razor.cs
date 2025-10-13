@@ -7,7 +7,7 @@ namespace Employees.Frontend.Components.Pages.Employees;
 
 public partial class EmployeeCreate
 {
-    private Employee Employee = new();
+    private Employee employee = new();
 
     [Inject] private IRepository Repository { get; set; } = null!;
     [Inject] private NavigationManager NavigationManager { get; set; } = null!;
@@ -15,7 +15,7 @@ public partial class EmployeeCreate
 
     private async Task CreateAsync()
     {
-        var responseHttp = await Repository.PostAsync("/api/employees", Employee);
+        var responseHttp = await Repository.PostAsync("/api/employees", employee);
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
