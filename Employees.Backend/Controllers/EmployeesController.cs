@@ -37,4 +37,14 @@ public class EmployeesController : GenericController<Employee>
         }
         return BadRequest();
     }
+    [HttpGet("paginated")]
+    public override async Task<IActionResult> GetAsync(PaginationDTO pagination) 
+    {
+        var response = await _employeeUnitOfWork.GetAsync(pagination);
+        if (response.IsSuccess)
+        {
+            return Ok(response.Result);
+        }
+        return BadRequest();
+    }
 }

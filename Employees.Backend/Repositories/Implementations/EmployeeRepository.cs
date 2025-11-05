@@ -39,15 +39,13 @@ public class EmployeeRepository : GenericRepository<Employee>, IEmployeeReposito
 
     public override async Task<ActionResponse<IEnumerable<Employee>>> GetAsync(PaginationDTO pagination)
     {
-        var queryable = _context.Employees
-            .Include(e => e.FirstName)
-            .AsQueryable();
+        var queryable = _context.Employees.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(pagination.Filter))
         {
-            queryable = queryable.Where(x => x.FirstName.ToLower()
-            .Contains(pagination.Filter.ToLower()) || x.LastName.ToLower()
-            .Contains(pagination.Filter.ToLower()));
+            queryable = queryable.Where(x => 
+            x.FirstName.ToLower().Contains(pagination.Filter.ToLower()) /*|| 
+            x.LastName.ToLower().Contains(pagination.Filter.ToLower())*/);
         }
 
         return new ActionResponse<IEnumerable<Employee>>
@@ -66,7 +64,9 @@ public class EmployeeRepository : GenericRepository<Employee>, IEmployeeReposito
 
         if (!string.IsNullOrWhiteSpace(pagination.Filter))
         {
-            queryable = queryable.Where(x => x.FirstName.ToLower().Contains(pagination.Filter.ToLower()));
+            queryable = queryable.Where(x =>
+            x.FirstName.ToLower().Contains(pagination.Filter.ToLower()) /*||
+            x.LastName.ToLower().Contains(pagination.Filter.ToLower())*/);
         }
 
         double count = await queryable.CountAsync();

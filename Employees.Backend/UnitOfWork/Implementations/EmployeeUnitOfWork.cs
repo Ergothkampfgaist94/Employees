@@ -4,6 +4,7 @@ using Employees.Shared.DTOs;
 using Employees.Shared.Entities;
 using Employees.Shared.Responses;
 using Microsoft.AspNetCore.Components;
+using System.Diagnostics.Metrics;
 
 namespace Employees.Backend.UnitOfWork.Implementations;
 
@@ -21,4 +22,6 @@ public class EmployeeUnitOfWork : GenericUnitOfWork<Employee>, IEmployeeUnitOfWo
 
     public async Task<ActionResponse<IEnumerable<string>>> GetEmployeeNamesAsync(string text) =>
         await _employeeRepository.GetEmployeeNamesAsync(text);
+    public override async Task<ActionResponse<IEnumerable<Employee>>> GetAsync(PaginationDTO pagination) => 
+        await _employeeRepository.GetAsync(pagination);
 }
