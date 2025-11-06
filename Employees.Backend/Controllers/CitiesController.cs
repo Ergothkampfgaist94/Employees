@@ -3,7 +3,6 @@ using Employees.Backend.UnitOfWork.Interfaces;
 using Employees.Shared.DTOs;
 using Employees.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Employees.Backend.UnitOfWork.Implementations;
 
 namespace Employees.Backend.Controllers;
 

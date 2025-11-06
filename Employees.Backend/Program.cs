@@ -8,11 +8,15 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.AddControllers()
+    .AddJsonOptions(x =>
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=LocalDb"));
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseSqlServer("name=LocalDb", sqlOptions =>
+        sqlOptions.CommandTimeout(180)));
 builder.Services.AddTransient<SeedDB>();
 
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
@@ -23,18 +27,22 @@ builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
 builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
 builder.Services.AddScoped<IStatesUnitOfWork, StatesUnitOfWork>();
 builder.Services.AddScoped<IStatesRepository, StatesRepository>();
+builder.Services.AddScoped<ICitiesRepository, CitiesRepository>();
+builder.Services.AddScoped<ICitiesUnitOfWork, CitiesUnitOfWork>();
 
 var app = builder.Build();
 
-SeedDatabase(app);
+await SeedDatabaseAsync(app);
 
-void SeedDatabase(WebApplication app)
+async Task SeedDatabaseAsync(WebApplication app)
 {
-    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<DataContext>();
 
-    using var scope = scopedFactory!.CreateScope();
-    var services = scope.ServiceProvider.GetService<SeedDB>();
-    services!.SeedAsync().Wait();
+    await db.Database.MigrateAsync();
+
+    var services = scope.ServiceProvider.GetRequiredService<SeedDB>();
+    await services.SeedAsync();
 }
 
 if (app.Environment.IsDevelopment())

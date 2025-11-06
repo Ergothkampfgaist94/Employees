@@ -13,28 +13,6 @@ public class GenericController<T> : Controller where T : class
         _unitOfWork = unitOfWork;
     }
 
-    [HttpGet]
-    public virtual async Task<IActionResult> GetAllAsync()
-    {
-        var response = await _unitOfWork.GetAllAsync();
-        if (response.IsSuccess)
-        {
-            return Ok(response.Result);
-        }
-        return BadRequest();
-    }
-
-    [HttpGet("{id}")]
-    public virtual async Task<IActionResult> GetByIdAsync(int id)
-    {
-        var response = await _unitOfWork.GetByIdAsync(id);
-        if (response.IsSuccess)
-        {
-            return Ok(response.Result);
-        }
-        return NotFound();
-    }
-
     [HttpGet("paginated")]
     public virtual async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
     {
