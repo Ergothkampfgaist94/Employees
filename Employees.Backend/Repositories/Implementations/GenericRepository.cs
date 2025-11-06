@@ -4,6 +4,7 @@ using Employees.Shared.DTOs;
 using Employees.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
 using Employees.Backend.Helpers;
+using Employees.Shared.Entities;
 
 namespace Employees.Backend.Repositories.Implementations;
 
@@ -112,6 +113,33 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         {
             return ExceptionActionResponse(ex);
         }
+    }
+
+    public virtual async Task<ActionResponse<T>> GetAsync(int id)
+    {
+        var row = await _entity.FindAsync(id);
+        if (row != null)
+        {
+            return new ActionResponse<T>
+            {
+                IsSuccess = true,
+                Result = row
+            };
+        }
+        return new ActionResponse<T>
+        {
+            IsSuccess = false,
+            Message = "Registro no encontrado"
+        };
+    }
+
+    public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync()
+    {
+        return new ActionResponse<IEnumerable<T>>
+        {
+            IsSuccess = true,
+            Result = await _entity.ToListAsync()
+        };
     }
 
     public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination)

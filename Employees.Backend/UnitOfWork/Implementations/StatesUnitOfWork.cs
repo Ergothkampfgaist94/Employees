@@ -14,13 +14,7 @@ public class StatesUnitOfWork : GenericUnitOfWork<State>, IStatesUnitOfWork
         _statesRepository = statesRepository;
     }
 
-    public Task<ActionResponse<State>> GetAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
+    public override async Task<ActionResponse<IEnumerable<State>>> GetAsync() => await _statesRepository.GetAsync();
 
-    public Task<ActionResponse<IEnumerable<State>>> GetAsync()
-    {
-        throw new NotImplementedException();
-    }
+    public override async Task<ActionResponse<State>> GetAsync(int id) => await _statesRepository.GetAsync(id);
 }

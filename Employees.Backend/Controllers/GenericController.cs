@@ -89,4 +89,26 @@ public class GenericController<T> : Controller where T : class
         }
         return BadRequest(response.Message);
     }
+
+    [HttpGet]
+    public virtual async Task<IActionResult> GetAsync()
+    {
+        var action = await _unitOfWork.GetAsync();
+        if (action.IsSuccess)
+        {
+            return Ok(action.Result);
+        }
+        return BadRequest();
+    }
+
+    [HttpGet("{id}")]
+    public virtual async Task<IActionResult> GetAsync(int id)
+    {
+        var action = await _unitOfWork.GetAsync(id);
+        if (action.IsSuccess)
+        {
+            return Ok(action.Result);
+        }
+        return NotFound();
+    }
 }

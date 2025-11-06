@@ -15,13 +15,38 @@ public class CountriesRepository : GenericRepository<Country>, ICountriesReposit
         _context = context;
     }
 
-    public Task<ActionResponse<Country>> GetAsync(int id)
+    public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync()
     {
-        throw new NotImplementedException();
+        var countries = await _context.Countries
+            .Include(c => c.States)
+            .ToListAsync();
+        return new ActionResponse<IEnumerable<Country>>
+        {
+            IsSuccess = true,
+            Result = countries
+        };
     }
 
-    public Task<ActionResponse<IEnumerable<Country>>> GetAsync()
+    public override async Task<ActionResponse<Country>> GetAsync(int id)
     {
-        throw new NotImplementedException();
+        var country = await _context.Countries
+             .Include(c => c.States!)
+             .ThenInclude(s => s.Cities)
+             .FirstOrDefaultAsync(c => c.Id == id);
+
+        if (country == null)
+        {
+            return new ActionResponse<Country>
+            {
+                IsSuccess = false,
+                Message = "País no existe"
+            };
+        }
+
+        return new ActionResponse<Country>
+        {
+            IsSuccess = true,
+            Result = country
+        };
     }
 }
