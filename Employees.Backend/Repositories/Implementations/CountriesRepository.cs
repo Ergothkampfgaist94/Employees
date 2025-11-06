@@ -1,5 +1,7 @@
 ﻿using Employees.Backend.Data;
+using Employees.Backend.Helpers;
 using Employees.Backend.Repositories.Interfaces;
+using Employees.Shared.DTOs;
 using Employees.Shared.Entities;
 using Employees.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +20,7 @@ public class CountriesRepository : GenericRepository<Country>, ICountriesReposit
     public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync()
     {
         var countries = await _context.Countries
+            .OrderBy(x => x.Name)
             .Include(c => c.States)
             .ToListAsync();
         return new ActionResponse<IEnumerable<Country>>
@@ -47,6 +50,22 @@ public class CountriesRepository : GenericRepository<Country>, ICountriesReposit
         {
             IsSuccess = true,
             Result = country
+        };
+    }
+
+    public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.Countries
+            .Include(c => c.States)
+            .AsQueryable();
+
+        return new ActionResponse<IEnumerable<Country>>
+        {
+            IsSuccess = true,
+            Result = await queryable
+                .OrderBy(x => x.Name)
+                .Paginate(pagination)
+                .ToListAsync()
         };
     }
 }
