@@ -5,21 +5,23 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using System.Net;
 
-namespace Employees.Frontend.Components.Pages.Employees;
+namespace Employees.Frontend.Components.Pages.Countries;
 
-public partial class EmployeesIndex
+public partial class CountriesIndex
 {
-    private List<Employee> Employees { get; set; } = new();
-    private MudTable<Employee> table = new();
-    private readonly int[] pageSizeOptions = { 5, 10, 25, 50, 100, int.MaxValue };
+    private List<Country>? Countries { get; set; }
+    private MudTable<Country> table = new();
+    private readonly int[] pageSizeOptions = { 10, 25, 50, int.MaxValue };
     private int totalRecords = 0;
     private bool loading;
-    private const string baseUrl = "/api/employees";
+    private const string baseUrl = "api/countries";
     private string infoFormat = "{first_item}-{last_item} => {all_items}";
+
     [Inject] private IRepository Repository { get; set; } = null!;
     [Inject] private IDialogService DialogService { get; set; } = null!;
     [Inject] private ISnackbar Snackbar { get; set; } = null!;
     [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+
     [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
@@ -49,7 +51,7 @@ public partial class EmployeesIndex
         loading = false;
     }
 
-    private async Task<TableData<Employee>> LoadListAsync(TableState state, CancellationToken cancellationToken)
+    private async Task<TableData<Country>> LoadListAsync(TableState state, CancellationToken cancellationToken)
     {
         int page = state.Page + 1;
         int pageSize = state.PageSize;
@@ -60,18 +62,18 @@ public partial class EmployeesIndex
             url += $"&filter={Filter}";
         }
 
-        var responseHttp = await Repository.GetAsync<List<Employee>>(url);
+        var responseHttp = await Repository.GetAsync<List<Country>>(url);
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
             Snackbar.Add(message!, Severity.Error);
-            return new TableData<Employee> { Items = [], TotalItems = 0 };
+            return new TableData<Country> { Items = [], TotalItems = 0 };
         }
         if (responseHttp.Response == null)
         {
-            return new TableData<Employee> { Items = [], TotalItems = 0 };
+            return new TableData<Country> { Items = [], TotalItems = 0 };
         }
-        return new TableData<Employee>
+        return new TableData<Country>
         {
             Items = responseHttp.Response,
             TotalItems = totalRecords
@@ -85,23 +87,6 @@ public partial class EmployeesIndex
         await table.ReloadServerData();
     }
 
-    private async Task ToggleActiveAsync(Employee employee, bool newValue)
-    {
-        employee.IsActive = newValue;
-        var response = await Repository.PutAsync($"/api/employees", employee);
-
-        if (response.Error)
-        {
-            var message = await response.GetErrorMessageAsync();
-            Snackbar.Add(message ?? "Error al actualizar el estado del empleado", Severity.Error);
-            employee.IsActive = !newValue;
-        }
-        else
-        {
-            Snackbar.Add($"Empleado {(newValue ? "activado" : "desactivado")} correctamente", Severity.Success);
-        }
-    }
-
     private async Task ShowModalAsync(int id = 0, bool isEdit = false)
     {
         var options = new DialogOptions
@@ -113,13 +98,13 @@ public partial class EmployeesIndex
         if (isEdit)
         {
             var parameters = new DialogParameters
-            {
-                { "Id", id }
-            }; dialog = await DialogService.ShowAsync<EmployeeEdit>("Editar Empleado", parameters, options);
+        {
+            { "Id", id }
+        }; dialog = await DialogService.ShowAsync<CountryEdit>("Editar país", parameters, options);
         }
         else
         {
-            dialog = await DialogService.ShowAsync<EmployeeCreate>("Nuevo Empleado", options);
+            dialog = await DialogService.ShowAsync<CountryCreate>("Nuevo país", options);
         }
 
         var result = await dialog.Result;
@@ -130,12 +115,12 @@ public partial class EmployeesIndex
         }
     }
 
-    private async Task DeleteAsync(Employee employee)
+    private async Task DeleteAsync(Country country)
     {
         var parameters = new DialogParameters
-        {
-            { "Message", $"Estas seguro de borrar el Empleado: {employee.FirstName} {employee.LastName }?" }
-        };
+    {
+        { "Message", $"Estas seguro de borrar el país: {country.Name}" }
+    };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, CloseOnEscapeKey = true };
         var dialog = await DialogService.ShowAsync<ConfirmDialog>("Confirmación", parameters, options);
         var result = await dialog.Result;
@@ -144,12 +129,12 @@ public partial class EmployeesIndex
             return;
         }
 
-        var responseHttp = await Repository.DeleteAsync($"{baseUrl}/{employee.Id}");
+        var responseHttp = await Repository.DeleteAsync($"{baseUrl}/{country.Id}");
         if (responseHttp.Error)
         {
             if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
             {
-                NavigationManager.NavigateTo("/employees");
+                NavigationManager.NavigateTo("/countries");
             }
             else
             {

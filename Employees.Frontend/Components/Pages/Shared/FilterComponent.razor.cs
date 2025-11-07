@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 
-namespace Employees.Frontend.Components.Shared;
+namespace Employees.Frontend.Components.Pages.Shared;
 
 public partial class FilterComponent
 {
