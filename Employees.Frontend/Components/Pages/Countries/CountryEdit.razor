@@ -1,12 +1,12 @@
 ﻿@if (country is null)
 {
-    <Loading />
+    <Employees.Frontend.Components.Pages.Shared.Loading />
 }
 else
 {
     <MudDialog>
         <DialogContent>
-            <CountryForm Country="country" OnValidSubmit="EditAsync" ReturnAction="Return" />
+            <Employees.Frontend.Components.Pages.FormwithName.FormWithName Label="País:" Model="country" OnValidSubmit="EditAsync" ReturnAction="Return" />
         </DialogContent>
     </MudDialog>
 }

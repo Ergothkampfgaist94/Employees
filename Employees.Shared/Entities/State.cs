@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Employees.Shared.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace Employees.Shared.Entities;
 
