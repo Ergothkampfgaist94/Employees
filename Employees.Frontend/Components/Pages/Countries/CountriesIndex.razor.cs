@@ -147,4 +147,9 @@ public partial class CountriesIndex
         await table.ReloadServerData();
         Snackbar.Add("Registro borrado", Severity.Success);
     }
+
+    private void StatesAction(Country country)
+    {
+        NavigationManager.NavigateTo($"/countries/details/{country.Id}");
+    }
 }

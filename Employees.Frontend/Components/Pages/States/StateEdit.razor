@@ -1,0 +1,14 @@
+﻿@using global::Employees.Frontend.Repositories
+@using global::Employees.Shared.Entities
+@if (state is null)
+{
+    <Employees.Frontend.Components.Pages.Shared.Loading />
+}
+else
+{
+    <MudDialog>
+        <DialogContent>
+            <Employees.Frontend.Components.Pages.FormwithName.FormWithName Label="Estado:" Model="state" OnValidSubmit="EditAsync" ReturnAction="Return" />
+        </DialogContent>
+    </MudDialog>
+}
