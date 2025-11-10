@@ -4,9 +4,11 @@ using Employees.Shared.Responses;
 
 namespace Employees.Backend.Repositories.Interfaces;
 
-public interface ICitiesUnitOfWork
+public interface ICitiesRepository
 {
     Task<ActionResponse<IEnumerable<City>>> GetAsync(PaginationDTO pagination);
 
     Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination);
+
+    Task<IEnumerable<City>> GetComboAsync(int stateId);
 }

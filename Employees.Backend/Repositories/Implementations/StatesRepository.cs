@@ -30,6 +30,14 @@ public class StatesRepository : GenericRepository<State>, IStatesRepository
         };
     }
 
+    public async Task<IEnumerable<State>> GetComboAsync(int countryId)
+    {
+        return await _context.States
+            .Where(s => s.CountryId == countryId)
+            .OrderBy(s => s.Name)
+            .ToListAsync();
+    }
+
     public override async Task<ActionResponse<State>> GetAsync(int id)
     {
         var state = await _context.States

@@ -26,4 +26,7 @@ public class StatesUnitOfWork : GenericUnitOfWork<State>, IStatesUnitOfWork
 
     public override async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination) =>
         await _statesRepository.GetTotalRecordsAsync(pagination);
+
+    public async Task<IEnumerable<State>> GetComboAsync(int countryId) =>
+        await _statesRepository.GetComboAsync(countryId);
 }

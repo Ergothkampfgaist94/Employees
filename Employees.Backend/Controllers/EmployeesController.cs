@@ -1,11 +1,14 @@
 ﻿using Employees.Backend.UnitOfWork.Interfaces;
 using Employees.Shared.DTOs;
 using Employees.Shared.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Employees.Backend.Controllers;
 
 [ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("api/[controller]")]
 public class EmployeesController : GenericController<Employee>
 {
@@ -37,8 +40,9 @@ public class EmployeesController : GenericController<Employee>
         }
         return BadRequest();
     }
+
     [HttpGet("paginated")]
-    public override async Task<IActionResult> GetAsync(PaginationDTO pagination) 
+    public override async Task<IActionResult> GetAsync(PaginationDTO pagination)
     {
         var response = await _employeeUnitOfWork.GetAsync(pagination);
         if (response.IsSuccess)
