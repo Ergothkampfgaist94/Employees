@@ -1,4 +1,5 @@
 using Employees.Backend.Data;
+using Employees.Backend.Helpers;
 using Employees.Backend.Repositories.Implementations;
 using Employees.Backend.Repositories.Interfaces;
 using Employees.Backend.UnitOfWork.Implementations;
@@ -37,6 +38,7 @@ builder.Services.AddScoped<Employees.Backend.UnitOfWork.Interfaces.ICitiesReposi
 builder.Services.AddScoped<Employees.Backend.Repositories.Interfaces.ICitiesRepository, CitiesUnitOfWork>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
+builder.Services.AddScoped<IFileStorage, FileStorage>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(x => x.TokenValidationParameters = new TokenValidationParameters
