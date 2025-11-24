@@ -2,10 +2,15 @@
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Inicio</MudNavLink>
      <AuthorizeView Roles="Admin">
         <Authorized>
-            <MudNavLink Href="employees" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.PersonSearch">Empleados</MudNavLink>
             <MudNavLink Href="countries" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Public">Países</MudNavLink>
         </Authorized>
     </AuthorizeView>
+    <AuthorizeView>
+        <Authorized>
+            <MudNavLink Href="employees" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.PersonSearch">Empleados</MudNavLink>
+        </Authorized>
+    </AuthorizeView>
+
 </MudNavMenu>
 
 

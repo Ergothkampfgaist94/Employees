@@ -3,7 +3,7 @@
 <PageTitle>Inicio</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">Bienvenido</MudText>
-<AuthorizeView Roles="Admin">
+<AuthorizeView>
     <Authorized>
         <MudText Typo="Typo.h3" Class="m-2" GutterBottom="true">Estas autenticado y autorizado, @context.User.Identity?.Name</MudText>
     </Authorized>
